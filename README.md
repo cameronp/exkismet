@@ -47,3 +47,5 @@ The package can be installed as:
 ## Reporting ham (non-spam)
 
   Exkismet.Api.submit_ham(%{...})
+
+  

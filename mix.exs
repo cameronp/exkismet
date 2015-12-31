@@ -47,7 +47,9 @@ defmodule Exkismet.Mixfile do
   defp deps do
     [
      {:httpoison, "~> 0.8.0"},
-     {:poison, "~> 1.5"}
+     {:poison, "~> 1.5"},
+     {:ex_doc, "~> 0.11", only: :dev},
+     {:earmark, ">= 0.0.0", only: :dev}
     ]
   end
 end

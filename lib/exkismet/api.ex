@@ -11,7 +11,6 @@ defmodule Exkismet.Api do
   @akismet_api_base ".rest.akismet.com/1.1/"
 
 
-
   @doc """
   Validates your API key with akismet.com.  If this fails, it's probably because
   you haven't set your API key in config.exs, like so:
@@ -30,17 +29,19 @@ defmodule Exkismet.Api do
   @doc """
   Checks a comment with Akismet.  Takes a map of meta data about the comment,
   using the following keys:
-
+  ```
   is_test: <true> if you're testing, leave it out otherwise  Keeps Akismet from
     using this message for training,
+  ```
 
-
-  blog (required): "http://<yourhostname>.com",
-  user_agent (required): the user agent of the *commenter*
-  user_ip (required): the ip of the commenter
-
+  These attributes are required.
+  ```
+  blog: "http://<yourhostname>.com",
+  user_agent: the user agent of the *commenter*
+  user_ip: the ip of the commenter
+  ```
   The following are optional, but the more you have the better it works.
-
+  ```
   referrer: "http://google.com",
 
   blog_charset: "UTF-8", // character set of the comment
@@ -57,7 +58,7 @@ defmodule Exkismet.Api do
   comment_author: "viagra-test-123",
   comment_type: "comment", (other types include tracbacks, etc)
   permalink: "http://127.0.0.1/my_blog_post",
-
+  ```
   """
   def comment_check(comment) when is_map(comment) do
     case post!("comment-check", comment, headers) do
