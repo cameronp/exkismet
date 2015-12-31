@@ -1,0 +1,12 @@
+%{"cdp": {:git, "https://github.com/cameronp/cdp.git", "0e0786167232b2ca1a1dee58a9f1f4c0b91f8b94", []},
+  "certifi": {:hex, :certifi, "0.3.0"},
+  "combine": {:hex, :combine, "0.7.0"},
+  "dbg": {:git, "https://github.com/fishcakez/dbg.git", "ce8fae0886eabb4944227a640261d6938cf099f2", []},
+  "hackney": {:hex, :hackney, "1.4.7"},
+  "httpoison": {:hex, :httpoison, "0.8.0"},
+  "idna": {:hex, :idna, "1.0.2"},
+  "mimerl": {:hex, :mimerl, "1.0.2"},
+  "poison": {:hex, :poison, "1.5.0"},
+  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
+  "timex": {:hex, :timex, "0.19.5"},
+  "tzdata": {:hex, :tzdata, "0.5.6"}}
