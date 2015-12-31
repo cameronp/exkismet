@@ -21,7 +21,7 @@ use Mix.Config
 #     config :logger, level: :info
 #
 
-config :exkismet, key: "<your key>", blog: "http://localhost"
+config :exkismet, key: System.get_env("AKISMET_KEY"), blog: "http://localhost"
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
