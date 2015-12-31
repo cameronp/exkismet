@@ -5,9 +5,25 @@ defmodule Exkismet.Mixfile do
     [app: :exkismet,
      version: "0.0.1",
      elixir: "~> 1.1",
+     description: description,
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps]
+  end
+
+  defp package do
+    [
+      maintainers: ["Cameron Price"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/cameronp/exkismet"}
+    ]
+  end
+
+  defp description do
+    """
+    A client (completely unofficial) for the Akismet.com comment-spam detection
+    API.
+    """
   end
 
   # Configuration for the OTP application
