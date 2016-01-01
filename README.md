@@ -9,7 +9,7 @@ The package can be installed as:
   1. Add exkismet to your list of dependencies in `mix.exs`:
 
         def deps do
-          [{:exkismet, "~> 0.0.1"}]
+          [{:exkismet, "~> 0.0.2"}]
         end
 
   2. Ensure exkismet is started before your application:
