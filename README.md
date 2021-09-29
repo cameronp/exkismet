@@ -4,46 +4,31 @@ Exkismet is a simple Elixir client for the Akismet.com spam detection API.
 
 ## Installation
 
-The package can be installed as:
+The package can be installed by adding exkismet to your list of dependencies in `mix.exs`:
 
-  1. Add exkismet to your list of dependencies in `mix.exs`:
-
-        def deps do
-          [{:exkismet, "~> 0.0.2"}]
-        end
-
-  2. Ensure exkismet is started before your application:
-
-        def application do
-          [applications: [:exkismet]]
-        end
-
-## Configuration
-
-  1. Add the following line to your `config.exs` file:
-
-      `config :exkismet, key: "<your api key>", blog: "http://<yourhosturl>"`
-
+```elixir
+  def deps do
+    [{:exkismet, "~> 0.0.3"}]
+  end
+```
 
 ## Test
-```
-   iex -S mix
-   iex(1)> Exkismet.Api.verify
-   :valid
-   iex(2)>
+```elixir
+iex(1)> Exkismet.Api.verify(key: "mykey")
+:valid
 ```
 ## Checking for spam
-```
-  Exkismet.Api.comment_check(%{...})  
+```elixir
+Exkismet.comment_check(%Exkismet.Comment{…}, key: "mykey")
 ```
   returns `:ham`, if the comment appears to be ok, `:spam` if it's suspicious, and
   `:discard` if Akismet is 100% certain that it's looking at spam.
 
 ## Reporting spam
-```
-  Exkismet.Api.submit_spam(%{...})
+```elixir
+Exkismet.Api.submit_spam(%Exkismet.Comment{…}, key: "mykey")
 ```
 ## Reporting ham (non-spam)
-```
-  Exkismet.Api.submit_ham(%{...})
+```elixir
+Exkismet.Api.submit_ham(%Exkismet.Comment{…}, key: "mykey")
 ```
