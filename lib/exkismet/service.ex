@@ -1,44 +1,69 @@
 defmodule Exkismet.Service do
   @moduledoc false
-  
+
   use HTTPoison.Base
+  alias Exkismet.Comment
 
   @akismet_verify_url "https://rest.akismet.com/1.1/"
   @akismet_api_base ".rest.akismet.com/1.1/"
 
+  @spec verify(key: String.t(), blog: String.t(), request_user_agent: String.t()) ::
+          HTTPoison.Response.t()
+  def verify([key: key, blog: blog] = query) when is_binary(key) and is_binary(blog) do
+    simple_query = Keyword.delete(query, :request_user_agent)
 
-  def verify do
-    query = [key: key, blog: blog]
-    post!("verify-key", query, headers)
+    do_post("verify-key", simple_query,
+      request_user_agent: Keyword.get(query, :request_user_agent)
+    )
   end
 
-
-  def comment_check(comment) when is_map(comment) do
-    post!("comment-check", comment, headers)
+  @spec comment_check(comment :: Comment.t(), options :: Exkismet.options()) ::
+          HTTPoison.Response.t()
+  def comment_check(%Comment{} = comment, options) do
+    do_post("comment-check", comment, options)
   end
 
-  def submit_spam(comment) when is_map(comment) do
-    post!("submit-spam", comment, headers)
+  @spec submit_spam(comment :: Comment.t(), options :: Exkismet.options()) ::
+          HTTPoison.Response.t()
+  def submit_spam(%Comment{} = comment, options) do
+    do_post("submit-spam", comment, options)
   end
 
-  def submit_ham(comment) when is_map(comment) do
-    post!("submit-ham", comment, headers)
+  @spec submit_ham(comment :: Comment.t(), options :: Exkismet.options()) ::
+          HTTPoison.Response.t()
+  def submit_ham(%Comment{} = comment, options) do
+    do_post("submit-ham", comment, options)
   end
 
+  def process_request_body(body) when is_struct(body),
+    do: body |> Map.from_struct() |> process_request_body()
 
-  defp process_request_body(body), do: body |> URI.encode_query
+  def process_request_body(body), do: body |> URI.encode_query()
 
-  defp process_headers(headers), do: headers |> Enum.into(%{})
-
-  defp process_url("verify-key"), do: @akismet_verify_url <> "verify-key"
-  defp process_url(endpoint), do: "http://" <> key <> @akismet_api_base <> endpoint
-
-  defp headers do
-    %{"Content-Type" => "application/x-www-form-urlencoded"}
+  @spec do_post(String.t(), any(), Exkismet.options()) :: HTTPoison.Response.t()
+  defp do_post("verify-key", data, options) do
+    post!(@akismet_verify_url <> "verify-key", data, headers(options))
   end
 
-  defp key, do: Application.get_env(:exkismet, :key)
-  defp blog, do: Application.get_env(:exkismet, :blog)
+  defp do_post(action, data, options) do
+    post!(
+      "http://" <> Keyword.fetch!(options, :key) <> @akismet_api_base <> action,
+      data,
+      headers(options)
+    )
+  end
 
+  @spec headers(Keyword.t()) :: map()
+  defp headers(options) do
+    %{"Content-Type" => "application/x-www-form-urlencoded", "User-Agent" => user_agent(options)}
+  end
 
+  @spec user_agent(Keyword.t()) :: String.t()
+  defp user_agent(options) do
+    Keyword.get(
+      options,
+      :request_user_agent,
+      "Exkismet/#{Application.spec(:exkismet, :vsn) |> to_string()}"
+    )
+  end
 end

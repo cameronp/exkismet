@@ -2,14 +2,16 @@ defmodule Exkismet.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :exkismet,
-     version: "0.0.2",
-     elixir: "~> 1.2",
-     description: description,
-     package: package,
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps]
+    [
+      app: :exkismet,
+      version: "0.0.3",
+      elixir: "~> 1.10",
+      description: description(),
+      package: package(),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      deps: deps()
+    ]
   end
 
   defp package do
@@ -22,8 +24,7 @@ defmodule Exkismet.Mixfile do
 
   defp description do
     """
-    A client (completely unofficial) for the Akismet.com comment-spam detection
-    API.
+    A client (completely unofficial) for the Akismet.com comment-spam detection API.
     """
   end
 
@@ -31,8 +32,7 @@ defmodule Exkismet.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison],
-     mod: {Exkismet, []}]
+    []
   end
 
   # Dependencies can be Hex packages:
@@ -46,10 +46,11 @@ defmodule Exkismet.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-     {:httpoison, "~> 0.8.0"},
-     {:poison, "~> 1.5"},
-     {:ex_doc, "~> 0.11", only: :dev},
-     {:earmark, ">= 0.0.0", only: :dev}
+      {:httpoison, "~> 2.0"},
+      {:ex_doc, "~> 0.29", only: :dev},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:doctor, "~> 0.21.0", only: :dev},
+      {:dialyxir, "~> 1.2", only: [:dev], runtime: false}
     ]
   end
 end
